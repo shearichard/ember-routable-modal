@@ -43,8 +43,11 @@ export default Mixin.create({
         if (initial) {
             const handlerInfos = transition.handlerInfos;
             const parentRoute = handlerInfos[handlerInfos.length - 2].name;
+            const that = this;
 
-            this.intermediateTransitionTo(parentRoute);
+            this.transitionTo(parentRoute).method(false).then(() => {
+                that.transitionTo(that.routeName);
+            });
         }
 
         this.set('current._paramsCache', transition.params);
@@ -59,14 +62,13 @@ export default Mixin.create({
             const url = getURL(this.get('routing'), transition);
 
             const routerMain = getOwner(this).lookup('router:main');
-            const routerLib = routerMain._routerMicrolib || routerMain.router;
+            const routerLib = routerMain || routerMain.router;
 
-            if (routerLib.currentRouteName === transition.targetName) {
-                // Started on modal route
-            } else {
+            if (routerLib.currentRouteName !== transition.targetName) {
                 // this.connections must be merged with application connections
                 this.enter();
                 this.setup(model, transition);
+
                 getOwner(this).lookup('route:application').connections = getOwner(this).lookup('route:application').connections.concat(this.connections);
 
                 transition.abort();
