@@ -43,10 +43,10 @@ export default Mixin.create({
         if (initial) {
             const handlerInfos = transition.handlerInfos;
             const parentRoute = handlerInfos[handlerInfos.length - 2].name;
-            const that = this;
-
+            
+            transition.abort();
             this.transitionTo(parentRoute).method(false).then(() => {
-                that.transitionTo(that.routeName);
+                transition.retry();
             });
         }
 
