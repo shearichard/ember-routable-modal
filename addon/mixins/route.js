@@ -38,7 +38,7 @@ export default Mixin.create({
         });
     },
     beforeModel(transition) {
-        const initial = transition.isCausedByInitialTransition || typeof(transition.isCausedByInitialTransition) === "undefined";
+        const initial = transition.sequence === 0 && !transition.from;
 
         if (initial) {
             const handlerInfos = transition.handlerInfos;
@@ -56,7 +56,7 @@ export default Mixin.create({
     afterModel(model, transition) {
         this._super(...arguments);
 
-        const initial = transition.isCausedByInitialTransition || typeof(transition.isCausedByInitialTransition) === "undefined";
+        const initial = transition.sequence === 0 && !transition.from;
 
         if (!initial) {
             const url = getURL(this.get('routing'), transition);

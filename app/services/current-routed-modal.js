@@ -32,7 +32,7 @@ export default Service.extend({
         const routerMain = this.get('routing.router');
         const routerLib = routerMain._routerMicrolib || routerMain.router;
         const handlerInfos = routerLib.state.handlerInfos;
-        const currentController = handlerInfos[handlerInfos.length - 1]._handler.controller;
+        const currentController = handlerInfos[handlerInfos.length - 1]._route.controller;
 
         this.set('routeName', null);
 
