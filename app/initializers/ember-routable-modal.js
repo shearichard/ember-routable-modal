@@ -11,7 +11,7 @@ export default {
 
         EmberRouter.reopen({
             currentRoutedModalService: service('current-routed-modal'),
-            willTransition() {
+            routeWillChange() {
                 this._super(...arguments);
                 this.get('currentRoutedModalService').clear();
             }
